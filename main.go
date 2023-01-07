@@ -38,8 +38,10 @@ func main() {
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 
+		output := string(out)
+
 		return c.JSON(fiber.Map{
-			"users":  string(out),
+			"users":  output,
 			"status": c.Response().StatusCode(),
 		})
 	})
