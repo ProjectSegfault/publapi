@@ -10,6 +10,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"runtime"
+
+	"strings"
 )
 
 // publapi is a simple API for Project Segfault's public shared server (pubnix).
@@ -41,7 +43,7 @@ func main() {
 		output := string(out)
 
 		return c.JSON(fiber.Map{
-			"users":  output,
+			"users":  strings.TrimSuffix(output, "\n"),
 			"status": c.Response().StatusCode(),
 		})
 	})
