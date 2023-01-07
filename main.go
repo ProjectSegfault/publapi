@@ -34,7 +34,7 @@ func main() {
 
 	app.Post("/signup", pages.SignupPage)
 
-	app.Listen(utils.GetPort())
+	app.Listen(GetPort())
 }
 
 // GetPort returns the port to listen on
