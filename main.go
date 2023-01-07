@@ -8,6 +8,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	log "github.com/sirupsen/logrus"
+
+	"runtime"
 )
 
 // publapi is a simple API for Project Segfault's public shared server (pubnix).
@@ -22,8 +24,14 @@ func main() {
 	})
 
 	app.Get("/online", func(c *fiber.Ctx) error {
+		if runtime.GOOS == "windows" {
+			return c.JSON(fiber.Map{
+				"message": "/online is not supported on Windows",
+				"status":  c.Response().StatusCode(),
+			})
+		}
 		// Get the number of users online
-		out, err := exec.Command("users | wc -l").Output()
+		out, err := exec.Command("bash", "-c", "users | wc -l").Output()
 		if err != nil {
 			log.Error(err)
 			return c.SendStatus(fiber.StatusInternalServerError)
