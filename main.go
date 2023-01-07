@@ -31,7 +31,7 @@ func main() {
 			})
 		}
 		// Get the number of users online
-		out, err := exec.Command("bash", "-c", "users | wc -l").Output()
+		out, err := exec.Command("/usr/bin/users | /usr/bin/wc -l").Output()
 		if err != nil {
 			log.Error(err)
 			return c.SendStatus(fiber.StatusInternalServerError)
