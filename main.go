@@ -6,6 +6,7 @@ import (
 
 	"github.com/ProjectSegfault/publapi/pages"
 	"github.com/gofiber/fiber/v2"
+	"go.uber.org/zap"
 )
 
 // publapi is a simple API for Project Segfault's public shared server (pubnix).
@@ -20,9 +21,15 @@ func main() {
 	})
 
 	app.Get("/online", func(c *fiber.Ctx) error {
+
+		// set up logger
+		logger, _ := zap.NewProduction()
+		defer logger.Sync()
+
 		// Get the number of users online
 		out, err := exec.Command("users | wc -l").Output()
 		if err != nil {
+			logger.Error("failed to get number of users online", zap.Error(err))
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 
