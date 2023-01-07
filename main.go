@@ -39,7 +39,7 @@ func main() {
 		}
 
 		return c.JSON(fiber.Map{
-			"users":  out,
+			"users":  string(out),
 			"status": c.Response().StatusCode(),
 		})
 	})
