@@ -23,7 +23,7 @@ func main() {
 
 	app.Get("/online", func(c *fiber.Ctx) error {
 		// Get the number of users online
-		out, err := exec.Command("users | wc -l").Output()
+		out, err := exec.Command("/usr/bin/users | /usr/bin/wc -l").Output()
 		if err != nil {
 			log.Error(err)
 			return c.SendStatus(fiber.StatusInternalServerError)
