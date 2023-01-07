@@ -10,33 +10,30 @@ import (
 
 	"github.com/containrrr/shoutrrr"
 
-	"go.uber.org/zap"
+	log "github.com/sirupsen/logrus"
 )
 
 // SignupPage is the signup page handler
 func SignupPage(c *fiber.Ctx) error {
-	// set up logger
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
 
 	username := c.FormValue("username")
 	email := c.FormValue("email")
 	if username == "" || email == "" {
-		logger.Error("username or email is empty", zap.String("username", username), zap.String("email", email))
+		log.Error("Username or email is empty", username, email)
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
 	// generate password
 	pass, err := password.Generate(30, 10, 10, false, false)
 	if err != nil {
-		logger.Error("failed to generate password", zap.Error(err))
+		log.Error("Error generating password", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
 	// create user file
 	f, err := os.Create("/var/publapi/users/" + username + ".sh")
 	if err != nil {
-		logger.Error("failed to create user file", zap.Error(err))
+		log.Error("Error creating user file", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	defer f.Close()
@@ -53,14 +50,14 @@ func SignupPage(c *fiber.Ctx) error {
 	// write to file
 	_, err = f.WriteString(bashscript)
 	if err != nil {
-		logger.Error("failed to write to user file", zap.Error(err))
+		log.Error("Error writing to user file", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
 	// send notification to admins
 	err = shoutrrr.Send(os.Getenv("PUBLAPI_SHOUTRRRURL"), "New user signup! Please review /var/publapi/users/"+username+".sh to approve or deny the user.")
 	if err != nil {
-		logger.Error("failed to send notification to admins", zap.Error(err))
+		log.Error("Error sending notification to admins", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	return c.JSON(fiber.Map{
