@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// publapi is a simple API for Project Segfault's public shared server (pubnix).
 func main() {
 	app := fiber.New()
 
