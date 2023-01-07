@@ -1,10 +1,10 @@
 package main
 
 import (
+	"os"
 	"os/exec"
 
 	"github.com/ProjectSegfault/publapi/pages"
-	"github.com/ProjectSegfault/publapi/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -35,4 +35,13 @@ func main() {
 	app.Post("/signup", pages.SignupPage)
 
 	app.Listen(utils.GetPort())
+}
+
+// GetPort returns the port to listen on
+func GetPort() string {
+	port := os.Getenv("PUBLAPI_PORT")
+	if port == "" {
+		port = "3000"
+	}
+	return ":" + port
 }
