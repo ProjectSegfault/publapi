@@ -21,13 +21,6 @@ func SignupPage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
-	// generate password
-	pass, err := password.Generate(30, 10, 10, false, false)
-	if err != nil {
-		log.Error("Error generating password", err)
-		return c.SendStatus(fiber.StatusInternalServerError)
-	}
-
 	// create user file
 	f, err := os.Create("/var/publapi/users/" + username + ".sh")
 	if err != nil {
@@ -46,7 +39,6 @@ func SignupPage(c *fiber.Ctx) error {
 		"chmod 600 /home/" + username + "/pass\n" +
 		"chown " + username + ":" + username + " /home/" + username + "/pass\n" +
 		"echo \"" + username + "'s account has been created!\""
-
 
 	// write to file
 	_, err = f.WriteString(bashscript)
