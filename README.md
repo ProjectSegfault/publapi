@@ -1,6 +1,6 @@
 # PublAPI
 
-PublAPI is a simple API for Project Segfault's public shared system (pubnix).
+PublAPI is a simple API for Project Segfault's upcoming public shared system (pubnix).
 
 ## Install
 An installation of Go 1.19 or higher is required.
@@ -20,3 +20,4 @@ Currently, PublAPI has only two routes, /online and /signup.
 |---------|------|-----------------|------------------------------------|
 | /online | GET  | N/A             | Returns the number of online users |
 | /signup | POST | username, email | Creates a register script and notifies admins that a new registration request was sent |
+
