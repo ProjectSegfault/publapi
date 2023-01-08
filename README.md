@@ -16,9 +16,7 @@ By default it listens to port 3000 on 127.0.0.1. You can change the port with th
 ## Usage
 Currently, PublAPI has only two routes, /online and /signup.
 
-|---------|------|-----------------|------------------------------------|
 | ROUTE   | TYPE | EXTRA ARGS      | DESCRIPTION                        |
 |---------|------|-----------------|------------------------------------|
 | /online | GET  | N/A             | Returns the number of online users |
 | /signup | POST | username, email | Creates a register script and notifies admins that a new registration request was sent |
-|---------|------|-----------------|------------------------------------|
