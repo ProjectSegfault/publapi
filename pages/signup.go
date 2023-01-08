@@ -45,7 +45,6 @@ func SignupPage(c *fiber.Ctx) error {
 		"printf \"%s\\n%s\"" + " '" + pass + "' '" + pass + "' | passwd " + username + "\n" +
 		"echo \"" + username + "'s account has been created!\""
 
-	fmt.Println(bashscript)
 
 	// write to file
 	_, err = f.WriteString(bashscript)
@@ -54,6 +53,7 @@ func SignupPage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
+	fmt.Println("Registration request for " + username + " has been submitted by the frontend and has been written to /var/publapi/users/" + username + ".sh")
 	// send notification to admins
 	err = shoutrrr.Send(os.Getenv("PUBLAPI_SHOUTRRRURL"), "New user signup! Please review /var/publapi/users/"+username+".sh to approve or deny the user.")
 	if err != nil {
