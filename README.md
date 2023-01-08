@@ -11,7 +11,9 @@ go build
 ./publapi
 ```
 
-By default it listens to port 3000 on 127.0.0.1. You can change the port with the environment variable PUBLAPI_PORT.
+By default publapi listens on 127.0.0.1:3000. You can change the port with the environment variable PUBLAPI_PORT.
+
+Additionally, you need to set the variable PUBLAPI_SHOUTRRRURL in order for notifications to work. Url Format can be found at https://containrrr.dev/shoutrrr/v0.5/services/matrix/
 
 ## Usage
 Currently, PublAPI has only two routes, /online and /signup.
@@ -20,4 +22,3 @@ Currently, PublAPI has only two routes, /online and /signup.
 |---------|------|-----------------|------------------------------------|
 | /online | GET  | N/A             | Returns the number of online users |
 | /signup | POST | username, email | Creates a register script and notifies admins that a new registration request was sent |
-
