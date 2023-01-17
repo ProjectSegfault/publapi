@@ -20,12 +20,6 @@ func SignupPage(c *fiber.Ctx) error {
 		log.Error("username, email and ssh must be filled", username, email, ssh)
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
-	sshke, err := base64.StdEncoding.DecodeString(ssh)
-	sshkey := string(sshke)
-	if err != nil {
-		log.Error("unable to decode base64 ssh key")
-		return c.SendStatus(fiber.StatusBadRequest)
-	}
 
 	// create user file
 	f, err := os.Create("/var/publapi/users/" + username + ".sh")
@@ -42,7 +36,7 @@ func SignupPage(c *fiber.Ctx) error {
 		"useradd -Um -s /bin/bash " + username + "\n" +
 		"printf \"%s\\n%s\" \"${pass}\" \"${pass}\" | passwd " + username + "\n" +
 		"mkdir /home/" + username + "/.ssh\n" +
-		"echo '" + sshkey + "' > /home/" + username + "/.ssh/authorized_keys\n" +
+		"echo '" + ssh + "' > /home/" + username + "/.ssh/authorized_keys\n" +
 		"chmod 700 /home/" + username + "/.ssh\n" +
 		"chmod 600 /home/" + username + "/.ssh/authorized_keys\n" +
 		"chown -R " + username + ":" + username + " /home/" + username + "/.ssh\n" +
