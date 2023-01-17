@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/ProjectSegfault/publapi/pages"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
@@ -81,7 +80,6 @@ func userdata(username string) Userinfo {
 	user.desc = confparse(username, "desc")
 	user.email = confparse(username, "email")
 	user.loc = confparse(username, "loc")
-	//fmt.Println(user)
 	return user
 }
 
