@@ -21,4 +21,4 @@ Currently, PublAPI has only two routes, /online and /signup.
 | ROUTE   | TYPE | EXTRA ARGS      | DESCRIPTION                        |
 |---------|------|-----------------|------------------------------------|
 | /online | GET  | N/A             | Returns the number of online users |
-| /signup | POST | username, email | Creates a register script and notifies admins that a new registration request was sent |
+| /signup | POST | username, email, ssh | Creates a register script and notifies admins that a new registration request was sent. Note: SSH Key must be sent in base64 form |
