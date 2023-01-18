@@ -18,14 +18,14 @@ type Userstruct struct {
 	Users  []Userinfo
 }
 type Userinfo struct {
-	name     string
-	fullname string
-	loc      string
-	email    string
-	desc     string
-	website  string
-	capsule  string
-	online   bool
+	Name     string
+	FullName string
+	Loc      string
+	Email    string
+	Desc     string
+	Website  string
+	Capsule  string
+	Online   bool
 }
 
 func Dedup(input string) string {
@@ -61,9 +61,9 @@ func userdata(username, usersonline string) Userinfo {
 			log.Error(username + " does not have a meta-info.env")
 			var user Userinfo
 			if strings.Contains(usersonline, " "+username) == true {
-				user.online = true
+				user.Online = true
 			} else {
-				user.online = false
+				user.Online = false
 			}
 			return user
 		}
@@ -71,17 +71,17 @@ func userdata(username, usersonline string) Userinfo {
 	viper.SetConfigFile(filename)
 	viper.ReadInConfig()
 	var user Userinfo
-	user.name = viper.GetString("USERNAME")
-	user.fullname = viper.GetString("FULL_NAME")
-	user.capsule = viper.GetString("GEMINI_CAPSULE")
-	user.website = viper.GetString("WEBSITE")
-	user.desc = viper.GetString("DESCRIPTION")
-	user.email = viper.GetString("EMAIL")
-	user.loc = viper.GetString("LOCATION")
+	user.Name = viper.GetString("USERNAME")
+	user.FullName = viper.GetString("FULL_NAME")
+	user.Capsule = viper.GetString("GEMINI_CAPSULE")
+	user.Website = viper.GetString("WEBSITE")
+	user.Desc = viper.GetString("DESCRIPTION")
+	user.Email = viper.GetString("EMAIL")
+	user.Loc = viper.GetString("LOCATION")
 	if strings.Contains(usersonline, " "+username) == true {
-		user.online = true
+		user.Online = true
 	} else {
-		user.online = false
+		user.Online = false
 	}
 	return user
 }
