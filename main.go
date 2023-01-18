@@ -20,12 +20,12 @@ type Userstruct struct {
 type Userinfo struct {
 	Name     string `json:"name"`
 	FullName string `json:"fullName"`
-	Loc      string `json:"loc"`
-	Email    string `json:"email"`
 	Desc     string `json:"desc"`
+	Online   bool `json:"online"` 
+	Email    string `json:"email"`
 	Website  string `json:"website"`
 	Capsule  string `json:"capsule"`
-	Online   bool `json:"online"` 
+	Loc      string `json:"loc"`
 }
 
 func Dedup(input string) string {
@@ -60,6 +60,7 @@ func userdata(username, usersonline string) Userinfo {
 		if os.IsNotExist(error) {
 			log.Error(username + " does not have a meta-info.env")
 			var user Userinfo
+			user.Name = username
 			if strings.Contains(usersonline, " "+username) == true {
 				user.Online = true
 			} else {
@@ -71,7 +72,7 @@ func userdata(username, usersonline string) Userinfo {
 	viper.SetConfigFile(filename)
 	viper.ReadInConfig()
 	var user Userinfo
-	user.Name = viper.GetString("USERNAME")
+	user.Name = username
 	user.FullName = viper.GetString("FULL_NAME")
 	user.Capsule = viper.GetString("GEMINI_CAPSULE")
 	user.Website = viper.GetString("WEBSITE")
