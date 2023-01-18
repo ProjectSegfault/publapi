@@ -4,12 +4,10 @@ import (
 	"github.com/ProjectSegfault/publapi/pages"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v3"
-	"io/ioutil"
+	"github.com/spf13/viper"
 	"os"
 	"os/exec"
 	"runtime"
-
 	"strings"
 )
 
@@ -54,32 +52,26 @@ func contains(strs []string, str string) bool {
 	return false
 }
 
-func confparse(username, item string) string {
-	filename := "/home/" + username + "/meta-info.yaml"
-	file, err := ioutil.ReadFile(filename)
-	if err != nil {
-		log.Error(err)
-	}
-	parsedData := make(map[interface{}]interface{})
-	err2 := yaml.Unmarshal(file, &parsedData)
-	if err2 != nil {
-		log.Error(err2)
-	}
-	val, err3 := parsedData[item].(string)
-	if !err3 {
-		log.Error(err3)
-	}
-	return val
-}
 func userdata(username string) Userinfo {
+	filename := "/home/" + username + "/meta-info.env"
+	_, error := os.Stat(filename)
+	if error != nil {
+		if os.IsNotExist(error) {
+			log.Error(username + " does not have a meta-info.env")
+			var user Userinfo
+			return user
+		}
+	}
+	viper.SetConfigFile(filename)
+	viper.ReadInConfig()
 	var user Userinfo
-	user.name = confparse(username, "name")
-	user.fullname = confparse(username, "fullname")
-	user.capsule = confparse(username, "capsule")
-	user.website = confparse(username, "website")
-	user.desc = confparse(username, "desc")
-	user.email = confparse(username, "email")
-	user.loc = confparse(username, "loc")
+	user.name = viper.GetString("USERNAME")
+	user.fullname = viper.GetString("FULL_NAME")
+	user.capsule = viper.GetString("GEMINI_CAPSULE")
+	user.website = viper.GetString("WEBSITE")
+	user.desc = viper.GetString("DESCRIPTION")
+	user.email = viper.GetString("EMAIL")
+	user.loc = viper.GetString("LOCATION")
 	return user
 }
 
@@ -124,6 +116,7 @@ func main() {
 			uname := string(usersarr[i])
 			userinfostruct = append(userinfostruct, userdata(uname))
 		}
+		log.Info(userinfostruct)
 		data := Userstruct{
 			Status: c.Response().StatusCode(),
 			Online: output,
