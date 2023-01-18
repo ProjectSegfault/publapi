@@ -12,20 +12,20 @@ import (
 )
 
 type Userstruct struct {
-	Status int
-	Online int
-	Total  int
-	Users  []Userinfo
+	Status int `json:"status"`
+	Online int `json:"online"`
+	Total  int `json:"total"`
+	Users  []Userinfo `json:"users"`
 }
 type Userinfo struct {
-	Name     string
-	FullName string
-	Loc      string
-	Email    string
-	Desc     string
-	Website  string
-	Capsule  string
-	Online   bool
+	Name     string `json:"name"`
+	FullName string `json:"fullName"`
+	Loc      string `json:"loc"`
+	Email    string `json:"email"`
+	Desc     string `json:"desc"`
+	Website  string `json:"website"`
+	Capsule  string `json:"capsule"`
+	Online   bool `json:"online"` 
 }
 
 func Dedup(input string) string {
