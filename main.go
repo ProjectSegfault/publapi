@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+	"regexp"
 )
 
 type Userstruct struct {
@@ -56,12 +57,19 @@ func contains(strs []string, str string) bool {
 func userdata(username, usersonline string) Userinfo {
 	filename := "/home/" + username + "/meta-info.env"
 	_, error := os.Stat(filename)
+	regex := "(^| )" + username + "($| )"
+	log.Info(usersonline)
+	isonline, err := regexp.MatchString(string(regex), string(usersonline))
+	log.Info(isonline)
+	if err != nil {
+		log.Error(err)
+	}
 	if error != nil {
 		if os.IsNotExist(error) {
 			log.Error(username + " does not have a meta-info.env")
 			var user Userinfo
 			user.Name = username
-			if strings.Contains(usersonline, " "+username) == true {
+			if isonline == true {
 				user.Online = true
 			} else {
 				user.Online = false
@@ -79,7 +87,7 @@ func userdata(username, usersonline string) Userinfo {
 	user.Desc = viper.GetString("DESCRIPTION")
 	user.Email = viper.GetString("EMAIL")
 	user.Loc = viper.GetString("LOCATION")
-	if strings.Contains(usersonline, " "+username) == true {
+	if isonline == true {
 		user.Online = true
 	} else {
 		user.Online = false
