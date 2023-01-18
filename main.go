@@ -109,7 +109,7 @@ func main() {
 		usersonlinestr := string(usersonline)
 		usersonlinededup := Dedup(usersonlinestr)
 		outputa := int(strings.Count(usersonlinededup, " "))
-		var output int = 0
+		var output int
 		output = outputa + 1
 		if err != nil {
 			log.Error(err)
