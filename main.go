@@ -106,17 +106,19 @@ func main() {
 		}
 		// Get the number of users online
 		usersonline, err := exec.Command("bash", "-c", "/usr/bin/users").Output()
+		if err != nil {
+			log.Error(err)
+			return c.SendStatus(fiber.StatusInternalServerError)
+		}
 		usersonlinestr := string(usersonline)
 		usersonlinededup := Dedup(usersonlinestr)
 		outputa := int(strings.Count(usersonlinededup, " "))
 		var output int
 		output = outputa + 1
-		if err != nil {
-			log.Error(err)
-		}
 		users, err2 := exec.Command("bash", "-c", "/usr/bin/ls /home").Output()
 		if err2 != nil {
 			log.Error(err2)
+			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 		userstr := string(users)
 		userstr2 := strings.TrimSuffix(userstr, "\n")
