@@ -14,6 +14,7 @@ import (
 type Userstruct struct {
 	Status int
 	Online int
+	Total  int
 	Users  []Userinfo
 }
 type Userinfo struct {
@@ -24,7 +25,7 @@ type Userinfo struct {
 	desc     string
 	website  string
 	capsule  string
-	online   string
+	online   bool
 }
 
 func Dedup(input string) string {
@@ -52,13 +53,18 @@ func contains(strs []string, str string) bool {
 	return false
 }
 
-func userdata(username string) Userinfo {
+func userdata(username, usersonline string) Userinfo {
 	filename := "/home/" + username + "/meta-info.env"
 	_, error := os.Stat(filename)
 	if error != nil {
 		if os.IsNotExist(error) {
 			log.Error(username + " does not have a meta-info.env")
 			var user Userinfo
+			if strings.Contains(usersonline, " "+username) == true {
+				user.online = true
+			} else {
+				user.online = false
+			}
 			return user
 		}
 	}
@@ -72,6 +78,11 @@ func userdata(username string) Userinfo {
 	user.desc = viper.GetString("DESCRIPTION")
 	user.email = viper.GetString("EMAIL")
 	user.loc = viper.GetString("LOCATION")
+	if strings.Contains(usersonline, " "+username) == true {
+		user.online = true
+	} else {
+		user.online = false
+	}
 	return user
 }
 
@@ -114,13 +125,14 @@ func main() {
 		var userinfostruct []Userinfo
 		for i := 0; i < len(usersarr); i++ {
 			uname := string(usersarr[i])
-			userinfostruct = append(userinfostruct, userdata(uname))
+			userinfostruct = append(userinfostruct, userdata(uname, usersonlinededup))
 		}
 		log.Info(userinfostruct)
 		data := Userstruct{
 			Status: c.Response().StatusCode(),
 			Online: output,
 			Users:  userinfostruct,
+			Total:  int(strings.Count(userstr, "\n")),
 		}
 		return c.JSON(data)
 	})
