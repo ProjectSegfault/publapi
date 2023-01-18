@@ -1,7 +1,6 @@
 package pages
 
 import (
-	"encoding/base64"
 	"github.com/gofiber/fiber/v2"
 	"os"
 
