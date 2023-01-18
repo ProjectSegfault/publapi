@@ -16,9 +16,9 @@ By default publapi listens on 127.0.0.1:3000. You can change the port with the e
 Additionally, you need to set the variable PUBLAPI_SHOUTRRRURL in order for notifications to work. Url Format can be found at https://containrrr.dev/shoutrrr/v0.5/services/matrix/
 
 ## Usage
-Currently, PublAPI has only two routes, /online and /signup.
+Currently, PublAPI has only two routes, /users and /signup.
 
-| ROUTE   | TYPE | EXTRA ARGS      | DESCRIPTION                        |
-|---------|------|-----------------|------------------------------------|
-| /online | GET  | N/A             | Returns the number of online users |
+| ROUTE   | TYPE | EXTRA ARGS           | DESCRIPTION                     |
+|---------|------|----------------------|---------------------------------|
+| /users  | GET  | N/A                  | Return information about users. |
 | /signup | POST | username, email, ssh | Creates a register script and notifies admins that a new registration request was sent.|

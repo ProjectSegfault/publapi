@@ -97,10 +97,10 @@ func main() {
 		})
 	})
 
-	app.Get("/online", func(c *fiber.Ctx) error {
+	app.Get("/users", func(c *fiber.Ctx) error {
 		if runtime.GOOS == "windows" {
 			return c.JSON(fiber.Map{
-				"message": "/online is not supported on Windows",
+				"message": "/users is not supported on Windows",
 				"status":  c.Response().StatusCode(),
 			})
 		}
