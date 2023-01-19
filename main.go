@@ -1,15 +1,16 @@
 package main
 
 import (
-	"github.com/ProjectSegfault/publapi/pages"
-	"github.com/gofiber/fiber/v2"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"os"
 	"os/exec"
 	"regexp"
 	"runtime"
 	"strings"
+
+	"github.com/ProjectSegfault/publapi/pages"
+	"github.com/gofiber/fiber/v2"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 type Userstruct struct {
@@ -18,6 +19,7 @@ type Userstruct struct {
 	Total  int        `json:"total"`
 	Users  []Userinfo `json:"users"`
 }
+
 type Userinfo struct {
 	Name     string `json:"name"`
 	FullName string `json:"fullName"`
@@ -40,6 +42,7 @@ func Dedup(input string) string {
 	}
 	return strings.Join(unique, " ")
 }
+
 func contains(strs []string, str string) bool {
 	for _, s := range strs {
 		if s == str {
