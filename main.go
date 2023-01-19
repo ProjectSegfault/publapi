@@ -31,20 +31,15 @@ type Userinfo struct {
 
 func Dedup(input string) string {
 	unique := []string{}
-
 	words := strings.Split(input, " ")
 	for _, word := range words {
-		// If we alredy have this word, skip.
 		if contains(unique, word) {
 			continue
 		}
-
 		unique = append(unique, word)
 	}
-
 	return strings.Join(unique, " ")
 }
-
 func contains(strs []string, str string) bool {
 	for _, s := range strs {
 		if s == str {
@@ -58,9 +53,7 @@ func userdata(username, usersonline string) Userinfo {
 	filename := "/home/" + username + "/meta-info.env"
 	_, error := os.Stat(filename)
 	regex := "(^| )" + username + "($| )"
-	log.Info(usersonline)
 	isonline, err := regexp.MatchString(string(regex), string(usersonline))
-	log.Info(isonline)
 	if err != nil {
 		log.Error(err)
 	}
@@ -132,13 +125,11 @@ func main() {
 		userstr := string(users)
 		userstr2 := strings.TrimSuffix(userstr, "\n")
 		usersarr := strings.Split(userstr2, "\n")
-		//var userinfoarr []interface{}
 		var userinfostruct []Userinfo
 		for i := 0; i < len(usersarr); i++ {
 			uname := string(usersarr[i])
-			userinfostruct = append(userinfostruct, userdata(uname, usersonlinededup))
+			userinfostruct = append(userinfostruct, userdata(uname, strings.TrimSuffix(usersonlinededup, "\n")))
 		}
-		log.Info(userinfostruct)
 		data := Userstruct{
 			Status: c.Response().StatusCode(),
 			Online: output,
