@@ -42,6 +42,7 @@ func SignupPage(c *fiber.Ctx) error {
 		"echo \"${pass}\" > /home/" + username + "/pass\n" +
 		"chmod 600 /home/" + username + "/pass\n" +
 		"chown " + username + ":" + username + " /home/" + username + "/pass\n" +
+		"sed s/REPLACEME/" + username + "/g /home/" + username + "/meta-info.env\n" +
 		"echo \"" + username + "'s account has been created!\""
 
 	// write to file
