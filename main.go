@@ -7,22 +7,22 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"os/exec"
+	"regexp"
 	"runtime"
 	"strings"
-	"regexp"
 )
 
 type Userstruct struct {
-	Status int `json:"status"`
-	Online int `json:"online"`
-	Total  int `json:"total"`
+	Status int        `json:"status"`
+	Online int        `json:"online"`
+	Total  int        `json:"total"`
 	Users  []Userinfo `json:"users"`
 }
 type Userinfo struct {
 	Name     string `json:"name"`
 	FullName string `json:"fullName"`
 	Desc     string `json:"desc"`
-	Online   bool `json:"online"` 
+	Online   bool   `json:"online"`
 	Email    string `json:"email"`
 	Website  string `json:"website"`
 	Capsule  string `json:"capsule"`
