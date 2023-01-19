@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/ProjectSegfault/publapi/pages"
+	"github.com/ProjectSegfault/publapi/utils"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -29,27 +30,6 @@ type Userinfo struct {
 	Website  string `json:"website"`
 	Capsule  string `json:"capsule"`
 	Loc      string `json:"loc"`
-}
-
-func Dedup(input string) string {
-	unique := []string{}
-	words := strings.Split(input, " ")
-	for _, word := range words {
-		if contains(unique, word) {
-			continue
-		}
-		unique = append(unique, word)
-	}
-	return strings.Join(unique, " ")
-}
-
-func contains(strs []string, str string) bool {
-	for _, s := range strs {
-		if s == str {
-			return true
-		}
-	}
-	return false
 }
 
 func userdata(username, usersonline string) Userinfo {
@@ -116,7 +96,7 @@ func main() {
 			return c.SendStatus(fiber.StatusInternalServerError)
 		}
 		usersonlinestr := string(usersonline)
-		usersonlinededup := Dedup(usersonlinestr)
+		usersonlinededup := utils.Dedup(usersonlinestr)
 		outputa := int(strings.Count(usersonlinededup, " "))
 		var output int
 		output = outputa + 1
