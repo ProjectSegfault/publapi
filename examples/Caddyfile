@@ -1,0 +1,6 @@
+publapi.yourdomain.tld {
+	reverse_proxy localhost:3000
+	basicauth /signup
+		admin xxx
+	}
+}

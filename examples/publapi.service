@@ -1,0 +1,16 @@
+[Unit]
+Description=API for the Project Segfault Pubnix
+After=networking.target
+[Service]
+WorkingDirectory=/var/publapi
+User=publapi
+Group=publapi
+Environment=PUBLAPI_PORT=3000
+Environment=SHOUTRRR_URL='matrix://user:password@host/'
+ExecStart=/var/publapi/publapi
+RestartSec=5
+Restart=always
+KillMode=mixed
+
+[Install]
+WantedBy=default.target
