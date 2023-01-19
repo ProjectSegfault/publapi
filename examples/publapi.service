@@ -6,7 +6,7 @@ WorkingDirectory=/var/publapi
 User=publapi
 Group=publapi
 Environment=PUBLAPI_PORT=3000
-Environment=SHOUTRRR_URL='matrix://user:password@host/'
+Environment=PUBLAPI_SHOUTRRRURL='matrix://user:password@host/'
 ExecStart=/var/publapi/publapi
 RestartSec=5
 Restart=always
