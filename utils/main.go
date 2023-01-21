@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-//go:embed templates/signup-script-template
+//go:embed signup-script-template
 var Bashscript string
 
 func Dedup(input string) string {
