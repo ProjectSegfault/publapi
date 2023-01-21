@@ -1,10 +1,9 @@
 package main
 
 import (
-	"os"
-
 	"github.com/ProjectSegfault/publapi/pages"
 	"github.com/gofiber/fiber/v2"
+	"os"
 )
 
 // publapi is a simple API for Project Segfault's public shared server (pubnix).

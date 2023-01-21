@@ -1,8 +1,12 @@
 package utils
 
 import (
+	_ "embed"
 	"strings"
 )
+
+//go:embed templates/signup-script-template
+var Bashscript string
 
 func Dedup(input string) string {
 	unique := []string{}
