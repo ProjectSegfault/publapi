@@ -33,6 +33,7 @@ func SignupPage(c *fiber.Ctx) error {
 		"echo \"email of " + username + " is " + email + "\"\n" +
 		"pass=\"$(tr -dc A-Za-z0-9 </dev/urandom | head -c 64)\"\n" +
 		"useradd -Um -s /bin/bash " + username + "\n" +
+		"chmod 711 /home/" + username + "\n"
 		"printf \"%s\\n%s\" \"${pass}\" \"${pass}\" | passwd " + username + "\n" +
 		"mkdir /home/" + username + "/.ssh\n" +
 		"echo '" + ssh + "' > /home/" + username + "/.ssh/authorized_keys\n" +
@@ -43,6 +44,7 @@ func SignupPage(c *fiber.Ctx) error {
 		"chmod 600 /home/" + username + "/pass\n" +
 		"chown " + username + ":" + username + " /home/" + username + "/pass\n" +
 		"sed s/REPLACEME/" + username + "/g /home/" + username + "/{meta-info.env,Caddyfile}\n" +
+		"loginctl enable-linger" + username + "\n" +
 		"setquota -u " + username + " 20G 20G 0 0 /\n" +
 		"echo \"" + username + "'s account has been created!\""
 
