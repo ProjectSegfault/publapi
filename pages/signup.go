@@ -15,8 +15,9 @@ func SignupPage(c *fiber.Ctx) error {
 	username := c.FormValue("username")
 	email := c.FormValue("email")
 	ssh := c.FormValue("ssh")
-	if username == "" || email == "" || ssh == "" {
-		log.Error("username, email and ssh must be filled", username, email, ssh)
+	ip := c.FormValue("ip")
+	if username == "" || email == "" || ssh == "" || ip == "" {
+		log.Error("username, email, ssh and ip must be filled", username, email, ssh, ip)
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
 
@@ -63,7 +64,7 @@ func SignupPage(c *fiber.Ctx) error {
 
 	log.Info("Registration request for " + username + " has been submitted by the frontend and has been written to /var/publapi/users/" + username + ".sh")
 	// send notification to admins
-	err = shoutrrr.Send(os.Getenv("PUBLAPI_SHOUTRRRURL"), "New user signup! Please review /var/publapi/users/"+username+".sh to approve or deny the user.")
+	err = shoutrrr.Send(os.Getenv("PUBLAPI_SHOUTRRRURL"), "New user signup! Please review /var/publapi/users/"+username+".sh to approve or deny the user. IP: "+ip+" Email: "+email)
 	if err != nil {
 		log.Error("Error sending notification to admins", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
