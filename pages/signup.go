@@ -33,7 +33,7 @@ func SignupPage(c *fiber.Ctx) error {
 		"echo \"email of " + username + " is " + email + "\"\n" +
 		"pass=\"$(tr -dc A-Za-z0-9 </dev/urandom | head -c 64)\"\n" +
 		"useradd -Um -s /bin/bash " + username + "\n" +
-		"chmod 711 /home/" + username + "\n"
+		"chmod 711 /home/" + username + "\n" +
 		"printf \"%s\\n%s\" \"${pass}\" \"${pass}\" | passwd " + username + "\n" +
 		"mkdir /home/" + username + "/.ssh\n" +
 		"echo '" + ssh + "' > /home/" + username + "/.ssh/authorized_keys\n" +
