@@ -46,8 +46,13 @@ func SignupPage(c *fiber.Ctx) error {
 		"sed s/REPLACEME/" + username + "/g /home/" + username + "/{meta-info.env,Caddyfile}\n" +
 		"loginctl enable-linger" + username + "\n" +
 		"setquota -u " + username + " 20G 20G 0 0 /\n" +
-		"echo \"" + username + "'s account has been created!\""
+		"echo \"" + username + "'s account has been created!\"" +
+		"rm -rf $0"
 
+	chmoderr := os.Chmod("/var/publapi/users/"+username+".sh", 0700)
+	if chmoderr != nil {
+		log.Error(err)
+	}
 	// write to file
 	_, err = f.WriteString(bashscript)
 	if err != nil {
