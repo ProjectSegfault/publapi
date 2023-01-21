@@ -44,7 +44,7 @@ func SignupPage(c *fiber.Ctx) error {
 		"chmod 600 /home/" + username + "/pass\n" +
 		"chown " + username + ":" + username + " /home/" + username + "/pass\n" +
 		"sed s/REPLACEME/" + username + "/g /home/" + username + "/{meta-info.env,Caddyfile}\n" +
-		"loginctl enable-linger" + username + "\n" +
+		"loginctl enable-linger " + username + "\n" +
 		"setquota -u " + username + " 20G 20G 0 0 /\n" +
 		"echo \"" + username + "'s account has been created!\"" +
 		"rm -rf $0"
