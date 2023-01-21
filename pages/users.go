@@ -89,9 +89,15 @@ func UsersPage(c *fiber.Ctx) error {
 	}
 	usersonlinestr := string(usersonline)
 	usersonlinededup := utils.Dedup(usersonlinestr)
-	outputa := int(strings.Count(usersonlinededup, " "))
 	var output int
-	output = outputa + 1
+	if strings.Contains(usersonlinededup, " ") {
+		outputa := int(strings.Count(usersonlinededup, " "))
+		output = outputa + 1
+	} else if usersonlinededup == "" {
+		output = 0
+	} else {
+		output = 1
+	}
 	users, err2 := exec.Command("bash", "-c", "/usr/bin/ls /home").Output()
 	if err2 != nil {
 		log.Error(err2)
