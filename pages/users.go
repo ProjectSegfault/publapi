@@ -21,14 +21,16 @@ type Userstruct struct {
 }
 
 type Userinfo struct {
-	Name     string `json:"name"`
-	FullName string `json:"fullName"`
-	Desc     string `json:"desc"`
-	Online   bool   `json:"online"`
-	Email    string `json:"email"`
-	Website  string `json:"website"`
-	Capsule  string `json:"capsule"`
-	Loc      string `json:"loc"`
+	Name      string `json:"name"`
+	FullName  string `json:"fullName"`
+	Desc      string `json:"desc"`
+	Online    bool   `json:"online"`
+	Email     string `json:"email"`
+	Matrix    string `json:"matrix"`
+	Fediverse string `json:"fediverse"`
+	Website   string `json:"website"`
+	Capsule   string `json:"capsule"`
+	Loc       string `json:"loc"`
 }
 
 func userdata(username, usersonline string) Userinfo {
@@ -61,6 +63,8 @@ func userdata(username, usersonline string) Userinfo {
 	user.Website = viper.GetString("WEBSITE")
 	user.Desc = viper.GetString("DESCRIPTION")
 	user.Email = viper.GetString("EMAIL")
+	user.Matrix = viper.GetString("MATRIX")
+	user.Fediverse = viper.GetString("FEDIVERSE")
 	user.Loc = viper.GetString("LOCATION")
 	if isonline == true {
 		user.Online = true
