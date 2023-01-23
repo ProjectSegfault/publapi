@@ -25,6 +25,7 @@ type Userinfo struct {
 	FullName  string `json:"fullName"`
 	Desc      string `json:"desc"`
 	Online    bool   `json:"online"`
+	Op        bool   `json:"op"`
 	Email     string `json:"email"`
 	Matrix    string `json:"matrix"`
 	Fediverse string `json:"fediverse"`
@@ -33,11 +34,12 @@ type Userinfo struct {
 	Loc       string `json:"loc"`
 }
 
-func userdata(username, usersonline string) Userinfo {
+func userdata(username, usersonline, ops string) Userinfo {
 	filename := "/home/" + username + "/meta-info.env"
 	_, error := os.Stat(filename)
 	regex := "(^| )" + username + "($| )"
 	isonline, err := regexp.MatchString(string(regex), string(usersonline))
+	isop, err := regexp.MatchString(string(regex), string(ops))
 	if err != nil {
 		log.Error(err)
 	}
@@ -50,6 +52,11 @@ func userdata(username, usersonline string) Userinfo {
 				user.Online = true
 			} else {
 				user.Online = false
+			}
+			if isop == true {
+				user.Op = true
+			} else {
+				user.Op = false
 			}
 			return user
 		}
@@ -66,6 +73,11 @@ func userdata(username, usersonline string) Userinfo {
 	user.Matrix = viper.GetString("MATRIX")
 	user.Fediverse = viper.GetString("FEDIVERSE")
 	user.Loc = viper.GetString("LOCATION")
+	if isop == true {
+		user.Op = true
+	} else {
+		user.Op = false
+	}
 	if isonline == true {
 		user.Online = true
 	} else {
@@ -98,6 +110,14 @@ func UsersPage(c *fiber.Ctx) error {
 	} else {
 		output = 1
 	}
+	// Get OPs
+	ops, opserr := exec.Command("bash", "-c", "/usr/bin/members sudo").Output()
+	if opserr != nil {
+		log.Error(err)
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+	opstr := string(ops)
+	// Get all users
 	users, err2 := exec.Command("bash", "-c", "/usr/bin/ls /home").Output()
 	if err2 != nil {
 		log.Error(err2)
@@ -106,10 +126,11 @@ func UsersPage(c *fiber.Ctx) error {
 	userstr := string(users)
 	userstr2 := strings.TrimSuffix(userstr, "\n")
 	usersarr := strings.Split(userstr2, "\n")
+	// Fill user info
 	var userinfostruct []Userinfo
 	for i := 0; i < len(usersarr); i++ {
 		uname := string(usersarr[i])
-		userinfostruct = append(userinfostruct, userdata(uname, strings.TrimSuffix(usersonlinededup, "\n")))
+		userinfostruct = append(userinfostruct, userdata(uname, strings.TrimSuffix(usersonlinededup, "\n"), strings.TrimSuffix(opstr, "\n")))
 	}
 	data := Userstruct{
 		Status: c.Response().StatusCode(),
