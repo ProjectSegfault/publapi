@@ -8,17 +8,18 @@ chmod 711 /home/{{username}}
 printf "%s\n%s" "${pass}" "${pass}" | passwd {{username}}
 echo "${pass}" > /home/{{username}}/pass
 chmod 600 /home/{{username}}/pass
-chown {{username}}:username /home/username/pass
+chown {{username}}:{{username}} /home/{{username}}/pass
 usermod -aG users {{username}}
 mkdir /home/{{username}}/.ssh
 echo "{{sshkey}}" > /home/{{username}}/.ssh/authorized_keys
 chmod 700 /home/{{username}}/.ssh
 chmod 600 /home/{{username}}/.ssh/authorized_keys
-chown -R {{username}}:username /home/username/.ssh
-sed -i 's/REPLACEME/{{username}}/g' /home/username/{meta-info.env,Caddyfile}
+chown -R {{username}}:{{username}} /home/{{username}}/.ssh
+sed -i 's/REPLACEME/{{username}}/g' /home/{{username}}/{meta-info.env,Caddyfile}
 sed -i 's/EMAIL=/EMAIL={{email}}/' /home/{{username}}/meta-info.env
 loginctl enable-linger {{username}}
 setquota -u {{username}} 20G 20G 0 0 /
 a=$(curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d '{"username":"{{username}}","name":"{{username}}","is_active":true,"groups":["57fe5750-5ac6-46ff-95bc-298cbff0b340"],"email":"{{email}}","attributes":{},"path":"users"}')
 pk=$(echo $a | jq '.pk')
-curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/${pk}/set_password"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d "{\"password\": \"${pass}\"}"
+curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/${pk}/set_password/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d "{\"password\": \"${pass}\"}"
+rm -rf $0
