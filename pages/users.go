@@ -26,6 +26,7 @@ type Userinfo struct {
 	Desc      string `json:"desc"`
 	Online    bool   `json:"online"`
 	Op        bool   `json:"op"`
+	Created   string `json:"created"`
 	Email     string `json:"email"`
 	Matrix    string `json:"matrix"`
 	Fediverse string `json:"fediverse"`
@@ -35,19 +36,29 @@ type Userinfo struct {
 }
 
 func userdata(username, usersonline, ops string) Userinfo {
-	filename := "/home/" + username + "/meta-info.env"
-	_, error := os.Stat(filename)
 	regex := "(^| )" + username + "($| )"
 	isonline, err := regexp.MatchString(string(regex), string(usersonline))
-	isop, err := regexp.MatchString(string(regex), string(ops))
 	if err != nil {
 		log.Error(err)
 	}
+	isop, operr := regexp.MatchString(string(regex), string(ops))
+	if operr != nil {
+		log.Error(err)
+	}
+	cmd := "/usr/bin/stat -c %W /home/" + username
+	crd, crerr := exec.Command("bash", "-c", cmd).Output()
+	if crerr != nil {
+		log.Error(crerr)
+	}
+	crdstr := string(crd)
+	filename := "/home/" + username + "/meta-info.env"
+	_, error := os.Stat(filename)
 	if error != nil {
 		if os.IsNotExist(error) {
 			log.Error(username + " does not have a meta-info.env")
 			var user Userinfo
 			user.Name = username
+			user.Created = strings.TrimSuffix(crdstr, "\n")
 			if isonline == true {
 				user.Online = true
 			} else {
@@ -65,6 +76,7 @@ func userdata(username, usersonline, ops string) Userinfo {
 	viper.ReadInConfig()
 	var user Userinfo
 	user.Name = username
+	user.Created = strings.TrimSuffix(crdstr, "\n")
 	user.FullName = viper.GetString("FULL_NAME")
 	user.Capsule = viper.GetString("GEMINI_CAPSULE")
 	user.Website = viper.GetString("WEBSITE")
