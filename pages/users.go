@@ -1,16 +1,16 @@
 package pages
 
 import (
-	"os"
-	"os/exec"
-	"regexp"
-	"runtime"
-	"strings"
-
 	"github.com/ProjectSegfault/publapi/utils"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"os"
+	"os/exec"
+	"regexp"
+	"runtime"
+	"strconv"
+	"strings"
 )
 
 type Userstruct struct {
@@ -26,7 +26,7 @@ type Userinfo struct {
 	Desc      string `json:"desc"`
 	Online    bool   `json:"online"`
 	Op        bool   `json:"op"`
-	Created   string `json:"created"`
+	Created   int    `json:"created"`
 	Email     string `json:"email"`
 	Matrix    string `json:"matrix"`
 	Fediverse string `json:"fediverse"`
@@ -51,6 +51,7 @@ func userdata(username, usersonline, ops string) Userinfo {
 		log.Error(crerr)
 	}
 	crdstr := string(crd)
+	crdstr = strings.TrimSuffix(crdstr, "\n")
 	filename := "/home/" + username + "/meta-info.env"
 	_, error := os.Stat(filename)
 	if error != nil {
@@ -58,7 +59,7 @@ func userdata(username, usersonline, ops string) Userinfo {
 			log.Error(username + " does not have a meta-info.env")
 			var user Userinfo
 			user.Name = username
-			user.Created = strings.TrimSuffix(crdstr, "\n")
+			user.Created, _ = strconv.Atoi(crdstr)
 			if isonline == true {
 				user.Online = true
 			} else {
@@ -76,7 +77,7 @@ func userdata(username, usersonline, ops string) Userinfo {
 	viper.ReadInConfig()
 	var user Userinfo
 	user.Name = username
-	user.Created = strings.TrimSuffix(crdstr, "\n")
+	user.Created, _ = strconv.Atoi(crdstr)
 	user.FullName = viper.GetString("FULL_NAME")
 	user.Capsule = viper.GetString("GEMINI_CAPSULE")
 	user.Website = viper.GetString("WEBSITE")
