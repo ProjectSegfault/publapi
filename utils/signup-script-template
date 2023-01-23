@@ -22,4 +22,14 @@ setquota -u {{username}} 20G 20G 0 0 /
 a=$(curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d '{"username":"{{username}}","name":"{{username}}","is_active":true,"groups":["57fe5750-5ac6-46ff-95bc-298cbff0b340"],"email":"{{email}}","attributes":{},"path":"users"}')
 pk=$(echo $a | jq '.pk')
 curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/${pk}/set_password/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d "{\"password\": \"${pass}\"}"
+printf 'Hi {{username}}, 
+Your Project Segfault account has been approved. 
+To login, run ssh {{username}}@projectsegfau.lt  
+You can get help regarding the pubnix at https://matrix.to/#/#pubnix:projectsegfau.lt  
+The password for pubnix-related things is located at ~/pass on the pubnix.  
+You can see it by running cat ~/pass while sshing into the pubnix.  
+Along with the pubnix, you get access to our public authentik instance, which shares the same password.  
+You can sign-up for most of our services using authentik! \n 
+Thank you for being part of Project Segfault.' \
+| s-nail -vr pubnix@projectsegfau.lt -s 'Your Project Segfault pubnix account has been created' {{email}}
 rm -rf $0
