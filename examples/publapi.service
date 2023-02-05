@@ -5,8 +5,7 @@ After=networking.target
 WorkingDirectory=/var/publapi
 User=publapi
 Group=publapi
-Environment=PUBLAPI_PORT=3000
-Environment=PUBLAPI_SHOUTRRRURL='matrix://user:password@host/'
+EnvironmentFile=/var/publapi/publapi.env
 ExecStart=/var/publapi/publapi
 RestartSec=5
 Restart=always
