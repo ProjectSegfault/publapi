@@ -1,14 +1,20 @@
 package main
 
 import (
+	"os"
+
 	"github.com/ProjectSegfault/publapi/pages"
 	"github.com/gofiber/fiber/v2"
-	"os"
 )
 
 // publapi is a simple API for Project Segfault's public shared server (pubnix).
 func main() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		AppName:                 "publapi",
+		EnableTrustedProxyCheck: true,
+		TrustedProxies:          []string{"0.0.0.0/0"},
+		ProxyHeader:             fiber.HeaderXForwardedFor,
+	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{
