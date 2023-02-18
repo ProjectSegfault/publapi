@@ -11,7 +11,13 @@ import (
 
 // SignupPage is the signup page handler
 func SignupPage(c *fiber.Ctx) error {
-
+	SignupIP, SignupIPExists := os.LookupEnv("PUBLAPI_SIGNUP_IP")
+	if SignupIPExists == true {
+		if c.IP() != SignupIP {
+			log.Info("Request made from invalid IP: ", c.IP())
+			return c.SendStatus(fiber.StatusForbidden)
+		}
+	}
 	username := c.FormValue("username")
 	email := c.FormValue("email")
 	ssh := c.FormValue("ssh")

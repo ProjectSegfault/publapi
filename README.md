@@ -18,6 +18,8 @@ By default publapi listens on 127.0.0.1:3000. You can change the port with the e
 
 Additionally, you need to set the variable PUBLAPI_EMAIL_SHOUTRRRURL and PUBLAPI_NOTIFY_SHOUTRRRURL in order for signup notifications to work. URL Format can be found at https://containrrr.dev/shoutrrr/v0.5.
 
+You can also set PUBLAPI_SIGNUP_IP to make sure signup requests can only be made from one IP.
+
 ## Usage
 Currently, PublAPI has only two routes, /users and /signup.
 
