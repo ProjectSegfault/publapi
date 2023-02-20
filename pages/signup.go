@@ -38,11 +38,11 @@ func SignupPage(c *fiber.Ctx) error {
 	if chmoderr != nil {
 		log.Error(err)
 	}
-	utils.Bashscript = strings.ReplaceAll(utils.Bashscript, "{{sshkey}}", ssh)
-	utils.Bashscript = strings.ReplaceAll(utils.Bashscript, "{{email}}", email)
-	utils.Bashscript = strings.ReplaceAll(utils.Bashscript, "{{username}}", username)
+	Bashscript := strings.ReplaceAll(utils.Bashscript, "{{sshkey}}", ssh)
+	Bashscript = strings.ReplaceAll(Bashscript, "{{email}}", email)
+	Bashscript = strings.ReplaceAll(Bashscript, "{{username}}", username)
 	// write to file
-	_, err = f.WriteString(utils.Bashscript)
+	_, err = f.WriteString(Bashscript)
 	if err != nil {
 		log.Error("Error writing to user file", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
