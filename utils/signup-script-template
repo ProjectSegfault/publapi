@@ -23,13 +23,15 @@ a=$(curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/"  -H "accep
 pk=$(echo $a | jq '.pk')
 curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/${pk}/set_password/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d "{\"password\": \"${pass}\"}"
 printf 'Hi {{username}}, 
-Your Project Segfault account has been approved. 
-To login, run ssh {{username}}@projectsegfau.lt  
-You can get help regarding the pubnix at https://matrix.to/#/#pubnix:projectsegfau.lt  
-The password for pubnix-related things is located at ~/pass on the pubnix.  
-You can see it by running cat ~/pass while sshing into the pubnix.  
-Along with the pubnix, you get access to our public authentik instance, which shares the same password.  
-You can sign-up for most of our services using authentik! \n 
-Thank you for being part of Project Segfault.' \
-| s-nail -vr pubnix@projectsegfau.lt -s 'Your Project Segfault pubnix account has been created' {{email}}
+Your Project Segfault Pubnix account has been approved.
+To login, run ssh {{username}}@projectsegfau.lt. You might need to specify a key, and we recommend adding an SSH host to your SSH config file to make it easier to log in later.
+There is a Matrix chat room for everything about the Pubnix. You can ask for help, discuss features etc at #pubnix:projectsegfau.lt.
+There is a password for Pubnix-related things in your user directory, you can run cat ~/pass to see it. We recommend to store it somewhere else and delete the file.
+You also get access to our public authentik instance, which allows you to sign up to many Project Segfault services with your Pubnix account. You can find it at https://auth.p.projectsegfau.lt, log in and you will be able to see a list of applications you can use authentik to log in with.
+
+If you ever get confused or have no idea what to do, we have some articles on our wiki at https://wiki.projectsegfau.lt/index.php?title=Category:Pubnix.
+We hope you have enough freedom to do what you want. You are limited to 20GB of storage however.
+
+We hope you have as much fun as we did making the Pubnix! :D' \
+| s-nail -vr pubnix@projectsegfau.lt -s 'Your Project Segfault Pubnix account has been created' {{email}}
 rm -rf $0
