@@ -16,7 +16,7 @@ chmod 700 /home/{{username}}/.ssh
 chmod 600 /home/{{username}}/.ssh/authorized_keys
 chown -R {{username}}:{{username}} /home/{{username}}/.ssh
 sed -i 's/REPLACEME/{{username}}/g' /home/{{username}}/{meta-info.env,Caddyfile}
-sed -i 's/EMAIL=/EMAIL={{email}}/' /home/{{username}}/meta-info.env
+# sed -i 's/EMAIL=/EMAIL={{email}}/' /home/{{username}}/meta-info.env
 loginctl enable-linger {{username}}
 setquota -u {{username}} 20G 20G 0 0 /
 a=$(curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d '{"username":"{{username}}","name":"{{username}}","is_active":true,"groups":["57fe5750-5ac6-46ff-95bc-298cbff0b340"],"email":"{{email}}","attributes":{},"path":"users"}')
