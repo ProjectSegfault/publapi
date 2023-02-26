@@ -76,6 +76,7 @@ func userdata(username, usersonline, ops string) Userinfo {
 	viper.SetConfigFile(filename)
 	viper.ReadInConfig()
 	var user Userinfo
+	user = Userinfo{}
 	user.Name = username
 	user.Created, _ = strconv.Atoi(crdstr)
 	user.FullName = viper.GetString("fullname")
