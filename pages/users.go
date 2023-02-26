@@ -52,11 +52,11 @@ func userdata(username, usersonline, ops string) Userinfo {
 	}
 	crdstr := string(crd)
 	crdstr = strings.TrimSuffix(crdstr, "\n")
-	filename := "/home/" + username + "/meta-info.env"
+	filename := "/home/" + username + "/meta-info.toml"
 	_, error := os.Stat(filename)
 	if error != nil {
 		if os.IsNotExist(error) {
-			log.Error(username + " does not have a meta-info.env")
+			log.Error(username + " does not have a meta-info.toml")
 			var user Userinfo
 			user.Name = username
 			user.Created, _ = strconv.Atoi(crdstr)
@@ -78,14 +78,14 @@ func userdata(username, usersonline, ops string) Userinfo {
 	var user Userinfo
 	user.Name = username
 	user.Created, _ = strconv.Atoi(crdstr)
-	user.FullName = viper.GetString("FULL_NAME")
-	user.Capsule = viper.GetString("GEMINI_CAPSULE")
-	user.Website = viper.GetString("WEBSITE")
-	user.Desc = viper.GetString("DESCRIPTION")
-	user.Email = viper.GetString("EMAIL")
-	user.Matrix = viper.GetString("MATRIX")
-	user.Fediverse = viper.GetString("FEDIVERSE")
-	user.Loc = viper.GetString("LOCATION")
+	user.FullName = viper.GetString("fullname")
+	user.Capsule = viper.GetString("gemini")
+	user.Website = viper.GetString("website")
+	user.Desc = viper.GetString("description")
+	user.Email = viper.GetString("email")
+	user.Matrix = viper.GetString("matrix")
+	user.Fediverse = viper.GetString("fediverse")
+	user.Loc = viper.GetString("location")
 	if isop == true {
 		user.Op = true
 	} else {
