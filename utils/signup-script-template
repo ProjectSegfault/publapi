@@ -36,5 +36,5 @@ We hope you have enough freedom to do what you want. You are limited to 20GB of 
 
 We hope you have as much fun as we did making the Pubnix! :D' \
 | s-nail -vr pubnix@projectsegfau.lt -s 'Your Project Segfault Pubnix account has been created' {{email}}
-source /var/publapi/publapi.env && shoutrrr send -u $PUBLAPI_NOTIFY_SHOUTRRRURL -m "Welcome new user, ~{{username}}!"
+source /var/publapi/publapi.env && shoutrrr send -u $PUBLAPI_NOTIFY_SHOUTRRRURL -m "Welcome new user, {{username}}!"
 rm -rf $0

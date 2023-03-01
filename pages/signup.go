@@ -56,7 +56,8 @@ func SignupPage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 	// send notification to admins
-	err = shoutrrr.Send(os.Getenv("PUBLAPI_NOTIFY_SHOUTRRRURL")+os.Getenv("PUBLAPI_NOTIFY_SHOUTRRRURL"), "New user signup! Please review /var/publapi/users/"+username+".sh to approve or deny the user. IP: "+ip+" Email: "+email)
+	shoutrrrUrl := os.Getenv("PUBLAPI_NOTIFY_SHOUTRRRURL") + os.Getenv("PUBLAPI_NOTIFY_ROOMS")
+	err = shoutrrr.Send(shoutrrrUrl, "New user signup! Please review /var/publapi/users/"+username+".sh to approve or deny the user. IP: "+ip+" Email: "+email)
 	if err != nil {
 		log.Error("Error sending notification to admins", err)
 		return c.SendStatus(fiber.StatusInternalServerError)
