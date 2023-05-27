@@ -26,6 +26,11 @@ func SignupPage(c *fiber.Ctx) error {
 		log.Error("username, email, ssh and ip must be filled", username, email, ssh, ip)
 		return c.SendStatus(fiber.StatusBadRequest)
 	}
+	raid, ok := os.LookupEnv("PUBLAPI_RAID_MODE")
+	if !ok || raid == "1" {
+		log.Error("PUBLAPI_RAID_MODE is ", val, " accepting every request as OK and not doing anything...\n User info: ", username, email, ip)
+		return c.SendStatus(fiber.StatusOK)
+	}
 
 	// create user file
 	f, err := os.Create("/var/publapi/users/" + username + ".sh")
