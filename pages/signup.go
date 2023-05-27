@@ -28,7 +28,7 @@ func SignupPage(c *fiber.Ctx) error {
 	}
 	raid, ok := os.LookupEnv("PUBLAPI_RAID_MODE")
 	if !ok || raid == "1" {
-		log.Error("PUBLAPI_RAID_MODE is ", val, " accepting every request as OK and not doing anything...\n User info: ", username, email, ip)
+		log.Error("PUBLAPI_RAID_MODE is on accepting every request as OK and not doing anything...\n User info: ", username, email, ip)
 		return c.SendStatus(fiber.StatusOK)
 	}
 
