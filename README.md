@@ -1,7 +1,7 @@
 # PublAPI
-![Go Version](https://img.shields.io/github/go-mod/go-version/projectsegfault/publapi?logo=Go&style=for-the-badge)
-![License](https://img.shields.io/github/license/projectsegfault/publapi?style=for-the-badge)
-![Matrix](https://img.shields.io/matrix/pubnix:projectsegfau.lt?logo=matrix&style=for-the-badge)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/projectsegfault/publapi?logo=Go&style=for-the-badge)](https://go.dev/doc/devel/release)
+[![License](https://img.shields.io/github/license/projectsegfault/publapi?style=for-the-badge)](./LICENSE)
+[![Matrix](https://img.shields.io/matrix/pubnix:projectsegfau.lt?logo=matrix&style=for-the-badge)](https://matrix.to/#/#pubnix:projectsegfau.lt)
 
 PublAPI is a simple API for Project Segfault's upcoming public shared system (pubnix).
 
