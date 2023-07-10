@@ -93,9 +93,12 @@ func SignupPage(c *fiber.Ctx) error {
 
 	if captchaResponse.Success == false {
 		log.Error("Captcha validation failed")
-		return c.SendStatus(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"username": username,
+			"message":  "Sorry! But the captcha validation failed. Please try again.",
+			"status":   c.Response().StatusCode(),
+		})
 	} else {
-
 		// create user file
 
 		f, err := os.Create("/var/publapi/users/" + username + ".sh")
