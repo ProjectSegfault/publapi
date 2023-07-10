@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/containrrr/shoutrrr v0.6.1
 	github.com/gofiber/fiber/v2 v2.41.0
+	github.com/kataras/hcaptcha v0.0.2
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.6.3
 )

@@ -1,16 +1,19 @@
 package pages
 
 import (
-	"github.com/ProjectSegfault/publapi/utils"
-	"github.com/gofiber/fiber/v2"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"os"
 	"os/exec"
 	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/ProjectSegfault/publapi/utils"
+	"github.com/gofiber/fiber/v2"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+
+	"github.com/kataras/hcaptcha"
 )
 
 type Userstruct struct {
@@ -34,6 +37,14 @@ type Userinfo struct {
 	Capsule   string `json:"capsule"`
 	Loc       string `json:"loc"`
 }
+
+// Hcaptcha setup
+
+var (
+	secretKey string = os.Getenv("PUBLAPI_HCAPTCHA_SECRET")
+	siteKey   string = os.Getenv("PUBLAPI_HCAPTCHA_SITE")
+	client           = hcaptcha.New(secretKey)
+)
 
 func userdata(username, usersonline, ops string) Userinfo {
 	regex := "(^| )" + username + "($| )"
@@ -144,7 +155,14 @@ func UsersPage(c *fiber.Ctx) error {
 	var userinfostruct []Userinfo
 	for i := 0; i < len(usersarr); i++ {
 		uname := string(usersarr[i])
-		userinfostruct = append(userinfostruct, userdata(uname, strings.TrimSuffix(usersonlinededup, "\n"), strings.TrimSuffix(opstr, "\n")))
+		userinfostruct = append(
+			userinfostruct,
+			userdata(
+				uname,
+				strings.TrimSuffix(usersonlinededup, "\n"),
+				strings.TrimSuffix(opstr, "\n"),
+			),
+		)
 	}
 	data := Userstruct{
 		Status: c.Response().StatusCode(),
