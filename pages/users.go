@@ -12,8 +12,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-
-	"github.com/kataras/hcaptcha"
 )
 
 type Userstruct struct {
@@ -37,14 +35,6 @@ type Userinfo struct {
 	Capsule   string `json:"capsule"`
 	Loc       string `json:"loc"`
 }
-
-// Hcaptcha setup
-
-var (
-	secretKey string = os.Getenv("PUBLAPI_HCAPTCHA_SECRET")
-	siteKey   string = os.Getenv("PUBLAPI_HCAPTCHA_SITE")
-	client           = hcaptcha.New(secretKey)
-)
 
 func userdata(username, usersonline, ops string) Userinfo {
 	regex := "(^| )" + username + "($| )"
