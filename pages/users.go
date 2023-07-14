@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -35,6 +36,22 @@ type Userinfo struct {
 	Capsule   string `json:"capsule"`
 	Loc       string `json:"loc"`
 }
+
+type ByAdminAndName []Userinfo
+
+func (a ByAdminAndName) Len() int { return len(a) }
+func (a ByAdminAndName) Less(i, j int) bool {
+	// If one person is an admin and the other is not, place the admin first
+	if a[i].Op && !a[j].Op {
+		return true
+	} else if !a[i].Op && a[j].Op {
+		return false
+	}
+
+	// If both persons are admins or both are not, sort by name
+	return a[i].Name < a[j].Name
+}
+func (a ByAdminAndName) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 
 func userdata(username, usersonline, ops string) Userinfo {
 	regex := "(^| )" + username + "($| )"
@@ -154,6 +171,7 @@ func UsersPage(c *fiber.Ctx) error {
 			),
 		)
 	}
+	sort.Sort(ByAdminAndName(userinfostruct))
 	data := Userstruct{
 		Status: c.Response().StatusCode(),
 		Online: output,
