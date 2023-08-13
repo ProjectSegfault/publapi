@@ -127,15 +127,16 @@ func SignupPage(c *fiber.Ctx) error {
 
 		// send notification to user that their reg request was sent
 
-		// err = shoutrrr.Send(os.Getenv("PUBLAPI_EMAIL_SHOUTRRRURL")+email, "Hello "+username+",\nYour registration request has been sent.\nIt will take a maximum of 48 hours for the request to be processed.\nThank you for being part of the Project Segfault Pubnix.")
-		// if err != nil {
-		// 	log.Error("Error sending email to user", err)
-		// 	return c.SendStatus(fiber.StatusInternalServerError)
-		// }
+		err = shoutrrr.Send(os.Getenv("PUBLAPI_EMAIL_SHOUTRRRURL")+email, "Hello "+username+",\nYour registration request has been sent.\nIt will take a maximum of 48 hours for the request to be processed.\nThank you for being part of the Project Segfault Pubnix.")
+		if err != nil {
+			log.Error("Error sending email to user", err)
+			return c.SendStatus(fiber.StatusInternalServerError)
+		}
 
 		// send notification to admins
 
-		shoutrrrUrl := os.Getenv("PUBLAPI_NOTIFY_SHOUTRRRURL") + os.Getenv("PUBLAPI_NOTIFY_ROOMS")
+		//shoutrrrUrl := os.Getenv("PUBLAPI_NOTIFY_SHOUTRRRURL") + os.Getenv("PUBLAPI_NOTIFY_ROOMS")
+		shoutrrrUrl := os.Getenv("PUBLAPI_EMAIL_SHOUTRRRURL")+"contact@projectsegfau.lt"
 		err = shoutrrr.Send(
 			shoutrrrUrl,
 			"New user signup! Please review /var/publapi/users/"+username+".sh to approve or deny the user. IP: "+ip+" Email: "+email,
