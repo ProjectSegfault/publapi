@@ -20,8 +20,8 @@ loginctl enable-linger {{username}}
 mkdir /var/gemini/p.projectsegfau.lt/users/{{username}} && ln -s /var/gemini/p.projectsegfau.lt/users/{{username}} /home/{{username}}/public_gemini
 chmod 755 /var/gemini/p.projectsegfau.lt/users/{{username}}
 chown -R {{username}}:{{username}} /var/gemini/p.projectsegfau.lt/users/{{username}} /home/{{username}}/public_gemini
-setquota -u {{username}} 20G 20G 0 0 /
-a=$(curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d '{"username":"{{username}}","name":"{{username}}","is_active":true,"groups":["57fe5750-5ac6-46ff-95bc-298cbff0b340"],"email":"{{email}}","attributes":{},"path":"users"}')
+setquota -u {{username}} 10G 12G 0 0 /
+a=$(curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d '{"username":"{{username}}","name":"{{username}}","is_active":true,"groups":["57fe5750-5ac6-46ff-95bc-298cbff0b340", "1b847f14-7adc-43e5-966c-db98561f7d5f"],"email":"{{email}}","attributes":{},"path":"users"}')
 pk=$(echo $a | jq '.pk')
 curl -X POST "https://auth.p.projectsegfau.lt/api/v3/core/users/${pk}/set_password/"  -H "accept: application/json" -H "content-type: application/json" -H "Authorization: Bearer $(</root/pass/authentiktoken)"  -d "{\"password\": \"${pass}\"}"
 printf 'Hi {{username}}, 
@@ -33,7 +33,7 @@ You also get access to our public authentik instance, which allows you to sign u
 
 If you ever get confused or have no idea what to do, we have some articles on our wiki at https://wiki.projectsegfau.lt/index.php?title=Category:Pubnix.
 You can also give us suggestions at this Vikunja page: https://pubnixtodo.p.projectsegfau.lt.
-We hope you have enough freedom to do what you want. You are limited to 20GB of storage however.
+We hope you have enough freedom to do what you want. You are limited to 10GB of storage however.
 
 We hope you have as much fun as we did making the Pubnix! :D' \
 | s-nail -vr pubnix@projectsegfau.lt -s 'Your Project Segfault Pubnix account has been created' {{email}}
