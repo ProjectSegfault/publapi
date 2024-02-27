@@ -2,7 +2,7 @@ package pages
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -75,7 +75,7 @@ func SignupPage(c *fiber.Ctx) error {
 	}
 	defer resp.Body.Close()
 
-	bod, err := ioutil.ReadAll(resp.Body)
+	bod, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Error("Error reading captcha response body", err)
 	}
@@ -99,6 +99,18 @@ func SignupPage(c *fiber.Ctx) error {
 			"status":   c.Response().StatusCode(),
 		})
 	} else {
+		// Check if user already exists
+		// We'll check the home folder and see if the username folder exists.
+		_, err := os.Stat("/home/" + username)
+		if err == nil {
+			log.Error("User already exists", username)
+			return c.JSON(fiber.Map{
+				"username": username,
+				"message":  "User already exists, Choose a different username.",
+				"status":   c.Response().StatusCode(),
+			})
+		}
+		
 		// create user file
 
 		f, err := os.Create("/var/publapi/users/" + username + ".sh")
@@ -149,5 +161,6 @@ func SignupPage(c *fiber.Ctx) error {
 			"message":  "User created! Please allow us 24 hours or more to review your account.",
 			"status":   c.Response().StatusCode(),
 		})
+		}
 	}
 }
