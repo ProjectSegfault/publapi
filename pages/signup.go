@@ -103,10 +103,10 @@ func SignupPage(c *fiber.Ctx) error {
 		// We'll check the home folder and see if the username folder exists.
 		_, err := os.Stat("/home/" + username)
 		if err == nil {
-			log.Error("User already exists", username)
+			log.Error("User already exists : ", username)
 			return c.JSON(fiber.Map{
 				"username": username,
-				"message":  "User already exists, Choose a different username.",
+				"message":  "User already exists. Please choose a different username.",
 				"status":   c.Response().StatusCode(),
 			})
 		}
