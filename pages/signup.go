@@ -110,7 +110,7 @@ func SignupPage(c *fiber.Ctx) error {
 				"status":   c.Response().StatusCode(),
 			})
 		}
-		
+
 		// create user file
 
 		f, err := os.Create("/var/publapi/users/" + username + ".sh")
@@ -161,6 +161,5 @@ func SignupPage(c *fiber.Ctx) error {
 			"message":  "User created! Please allow us 24 hours or more to review your account.",
 			"status":   c.Response().StatusCode(),
 		})
-		}
 	}
 }
