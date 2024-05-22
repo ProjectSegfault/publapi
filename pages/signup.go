@@ -154,7 +154,7 @@ func SignupPage(c *fiber.Ctx) error {
 		)
 		if err != nil {
 			log.Error("Error sending notification to admins", err)
-			return c.SendStatus(fiber.StatusInternalServerError)
+			//return c.SendStatus(fiber.StatusInternalServerError)
 		}
 		return c.JSON(fiber.Map{
 			"username": username,
